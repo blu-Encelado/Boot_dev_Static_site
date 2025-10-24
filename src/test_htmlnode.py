@@ -20,3 +20,21 @@ class TestTextNode(unittest.TestCase):
         html_node_01 = HTMLNode(tag="p", value="time to crush", children=None, props={"href": "https://www.google.com"})
         #print(f"##{html_node_00.props_to_html()}")
         self.assertNotEqual(html_node_00, html_node_01)
+    
+    def test_leaf_to_html_p(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+    
+    def test_to_html_with_children(self):
+        child_node_0 = LeafNode("span", "child")
+        parent_node = ParentNode("div", [child_node_0])
+        
+        self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
+
+    
+    def test_to_html_with_grandchildren(self):
+        grandchild_node = LeafNode("b", "grandchild")
+        child_node = ParentNode("span", [grandchild_node])
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(parent_node.to_html(),"<div><span><b>grandchild</b></span></div>",)
+    
