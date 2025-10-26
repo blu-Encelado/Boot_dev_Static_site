@@ -3,6 +3,15 @@ from htmlnode import *
 from text_to_html import *
 from extract_markdown import *
 
+def text_to_textnodes(text):
+    new_nodes = [TextNode(text, TextType.TEXT)]
+    new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
+    new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
+    new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
+    new_nodes = split_nodes_image(new_nodes)
+    new_nodes = split_nodes_link(new_nodes)
+    
+    return new_nodes
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     nodes_list = []
@@ -26,17 +35,21 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 if sentence:
                     new.append(TextNode(sentence, text_type))
 
-    nodes_list.extend(new)
+        nodes_list.extend(new)
     
     return nodes_list
 
 def split_nodes_image(old_nodes):
     node_list = []
     for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            node_list.append(node)
+            continue
         text = node.text
         image_tuple = extract_markdown_images(text)
         if len(image_tuple) == 0:
-            return old_nodes
+            node_list.append(node)
+            continue
         
         new = []
         remainig_text = text
@@ -70,10 +83,14 @@ def split_nodes_image(old_nodes):
 def split_nodes_link(old_nodes):
     node_list = []
     for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            node_list.append(node)
+            continue
         text = node.text
         link_tuple = extract_markdown_links(text)
         if len(link_tuple) == 0:
-            return old_nodes
+            node_list.append(node)
+            continue
         
         new = []
         remainig_text = text
