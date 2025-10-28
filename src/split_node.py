@@ -10,6 +10,7 @@ def text_to_textnodes(text):
     for delimiter in delimiters:
         new_nodes = split_nodes_delimiter(new_nodes, delimiter, delimiters[delimiter])
     
+    
     new_nodes = split_nodes_image(new_nodes)
     new_nodes = split_nodes_link(new_nodes)
     
@@ -75,7 +76,7 @@ def split_nodes_image(old_nodes):
             else:
                 new_nodes.append(TextNode(item[0], TextType.IMAGE, item[1]))
         
-    node_list.extend(new_nodes)
+        node_list.extend(new_nodes)
     return node_list
 
 
@@ -116,5 +117,5 @@ def split_nodes_link(old_nodes):
             else:
                 new_nodes.append(TextNode(item[0], TextType.LINK, item[1]))
         
-    node_list.extend(new_nodes)
+        node_list.extend(new_nodes)
     return node_list
