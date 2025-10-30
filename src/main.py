@@ -2,20 +2,26 @@ from textnode import *
 from blocktype import markdown_to_html_node
 from extract_markdown import extract_title
 import os
+import sys
 import shutil
 
 print("initialize main.py")
-public = "./public"
+public = "./docs"
 static = "./static"
 content = "./content/index.md"
 template = "./template.html"
 content_dir = "./content"
 
 def main():
+    base_path = sys.argv
     path_exists = os.path.exists(public)
     if path_exists:
         shutil.rmtree(public)
-    
+    if len(base_path) <= 1:
+        base_path = "/"    
+    else:
+        base_path = base_path[1]
+
     os.mkdir(public)
     path_to_public = os.path.abspath(public)
 
@@ -33,10 +39,10 @@ def main():
     else:
         raise Exception(f"No Object in {static}")   
     
-    generating_pages_recursive(content_dir, template, public)
+    generating_pages_recursive(content_dir, template, public, base_path)
 
 
-def generating_page(from_path, template_path, dest_path):
+def generating_page(from_path, template_path, dest_path, base_path):
     
     #print(f"Generating page from '{from_path}' \nto '{dest_path}'")
 
@@ -47,13 +53,16 @@ def generating_page(from_path, template_path, dest_path):
     open_template = open(template_path).read()
 
     mod_template = open_template.replace("{{ Title }}", page_title)
-    final_template = mod_template.replace("{{ Content }}", html_content)
+    mod_template = mod_template.replace("{{ Content }}", html_content)
+    mod_template = mod_template.replace('"href="/', f'href="{base_path}')
+    final_template = mod_template.replace('"src="/', f'src="{base_path}')
+
     if not os.path.exists(dest_path):
         os.makedirs(dest_path)
     dest_file = open(dest_path + "/index.html", "w").write(final_template)
 
 
-def generating_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generating_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path):
     abs_dir_path_content = os.path.abspath(dir_path_content)
     abs_template_path = os.path.abspath(template_path)
     abs_dir_path_destination = os.path.abspath(dest_dir_path)
@@ -66,9 +75,9 @@ def generating_pages_recursive(dir_path_content, template_path, dest_dir_path):
                 
                 dest_path = os.path.join(abs_dir_path_destination, r)
                 print(dest_path)
-                generating_page(path_to_item, abs_template_path, dest_path)
+                generating_page(path_to_item, abs_template_path, dest_path, base_path)
             else:
-                generating_pages_recursive(path_to_item, template_path, dest_dir_path)
+                generating_pages_recursive(path_to_item, template_path, dest_dir_path, base_path)
     
 
 
