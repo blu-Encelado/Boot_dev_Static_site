@@ -55,7 +55,6 @@ def generating_page(from_path, template_path, dest_path, base_path):
     mod_template = mod_template.replace("{{ Content }}", html_content)
     mod_template = mod_template.replace('href="/', f'href="{base_path}')
     final_template = mod_template.replace('src="/', f'src="{base_path}')
-    print(final_template)
 
     if not os.path.exists(dest_path):
         os.makedirs(dest_path)

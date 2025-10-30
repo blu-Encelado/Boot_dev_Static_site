@@ -1,1 +1,1 @@
-python3 src/main.py "/https://github.com/blu-Encelado/Boot_dev_Static_site/"
+python3 src/main.py "/Boot_dev_Static_site/"
