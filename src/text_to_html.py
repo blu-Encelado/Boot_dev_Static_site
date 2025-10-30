@@ -12,9 +12,9 @@ def text_to_html_node(text_node):
         case TextType.CODE:
             return LeafNode("code", text_node.text)
         case TextType.LINK:
-            return LeafNode("a", text_node.text, {"href": "www.google.it"})
+            return LeafNode("a", text_node.text, {"href": text_node.url})
         case TextType.IMAGE:
-            return LeafNode("img", "", {"src": "./directory/workspace", "alt": "image_text"})
+            return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
         case _:
             raise Exception("Invalid text_type")
 

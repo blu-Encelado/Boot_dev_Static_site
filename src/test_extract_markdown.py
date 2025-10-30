@@ -89,10 +89,17 @@ the **same** even with inline stuff
 ###### Il Leader _canuolo_ ha preso un **Mazzapicchio** in faccia
 """
         node = markdown_to_html_node(md)
-        print(f"///{node}")
         html = node.to_html()
-        print(f"boing °°##{html}")
         self.assertNotEqual(
         html,
         "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
     )
+        
+    def test_extract_title(self):
+        markdown = '''
+# Title! yes its is
+This is not, just ignore
+'''
+        title = extract_title(markdown)
+        print(f"//{title}")
+        self.assertEqual(title, "Title! yes its is")
