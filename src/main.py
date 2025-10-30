@@ -8,7 +8,6 @@ import shutil
 print("initialize main.py")
 public = "./docs"
 static = "./static"
-content = "./content/index.md"
 template = "./template.html"
 content_dir = "./content"
 
@@ -63,19 +62,19 @@ def generating_page(from_path, template_path, dest_path, base_path):
 
 
 def generating_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path):
+    #print(f" //{dir_path_content},\n{template_path}, \n{dest_dir_path}")
     abs_dir_path_content = os.path.abspath(dir_path_content)
     abs_template_path = os.path.abspath(template_path)
     abs_dir_path_destination = os.path.abspath(dest_dir_path)
-    if os.path.isdir(abs_dir_path_content):
-        content_dir = os.listdir(abs_dir_path_content)
+    if os.path.isdir(dir_path_content):
+        content_dir = os.listdir(dir_path_content)
         for item in content_dir:
-            path_to_item = abs_dir_path_content + f"/{item}"
+            path_to_item = dir_path_content + f"/{item}"
             if os.path.isfile(path_to_item):
-                r = "/".join(os.path.relpath(abs_dir_path_content).split("/")[1:])
+                r = "/".join(os.path.relpath(dir_path_content).split("/")[1:])
                 
-                dest_path = os.path.join(abs_dir_path_destination, r)
-                print(dest_path)
-                generating_page(path_to_item, abs_template_path, dest_path, base_path)
+                dest_path = os.path.join(dest_dir_path, r)
+                generating_page(path_to_item, template_path, dest_path, base_path)
             else:
                 generating_pages_recursive(path_to_item, template_path, dest_dir_path, base_path)
     
