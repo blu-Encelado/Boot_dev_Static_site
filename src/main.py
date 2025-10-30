@@ -43,7 +43,7 @@ def main():
 
 def generating_page(from_path, template_path, dest_path, base_path):
     
-    print(f"Generating page from '{from_path}' \nto '{dest_path}'\nusing {template_path}")
+    #print(f"Generating page from '{from_path}' \nto '{dest_path}'\nusing {template_path}")
 
     open_content = open(from_path, "r").read()
 
@@ -53,8 +53,9 @@ def generating_page(from_path, template_path, dest_path, base_path):
 
     mod_template = open_template.replace("{{ Title }}", page_title)
     mod_template = mod_template.replace("{{ Content }}", html_content)
-    mod_template = mod_template.replace('"href="/', f'href="{base_path}')
-    final_template = mod_template.replace('"src="/', f'src="{base_path}')
+    mod_template = mod_template.replace('href="/', f'href="{base_path}')
+    final_template = mod_template.replace('src="/', f'src="{base_path}')
+    print(final_template)
 
     if not os.path.exists(dest_path):
         os.makedirs(dest_path)
