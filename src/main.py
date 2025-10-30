@@ -43,7 +43,7 @@ def main():
 
 def generating_page(from_path, template_path, dest_path, base_path):
     
-    #print(f"Generating page from '{from_path}' \nto '{dest_path}'")
+    print(f"Generating page from '{from_path}' \nto '{dest_path}'\nusing {template_path}")
 
     open_content = open(from_path, "r").read()
 
@@ -63,9 +63,6 @@ def generating_page(from_path, template_path, dest_path, base_path):
 
 def generating_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path):
     #print(f" //{dir_path_content},\n{template_path}, \n{dest_dir_path}")
-    abs_dir_path_content = os.path.abspath(dir_path_content)
-    abs_template_path = os.path.abspath(template_path)
-    abs_dir_path_destination = os.path.abspath(dest_dir_path)
     if os.path.isdir(dir_path_content):
         content_dir = os.listdir(dir_path_content)
         for item in content_dir:
